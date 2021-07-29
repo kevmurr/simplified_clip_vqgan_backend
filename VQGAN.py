@@ -27,7 +27,7 @@ from Prompt import Prompt
 from MakeCutouts import MakeCutouts
 
 class VQGAN:
-    def __init__(self, input_text, width, height, model, save_increment,initial_image, final_image, seed, max_iterations, save_dir, input_images):
+    def __init__(self, input_text, width, height, model, save_increment,initial_image, final_image, seed, max_iterations, save_dir, input_images,model_dir="/content"):
         self.text=input_text
         self.width=width
         self.height=height
@@ -39,6 +39,7 @@ class VQGAN:
         self.max_iterations=max_iterations
         self.save_dir=save_dir
         self.input_images=input_images
+        self.model_dir=model_dir
         self.parse_args()
 
 
@@ -59,6 +60,7 @@ class VQGAN:
         self.text = [phrase.strip() for phrase in self.text.split("|")]
         if self.text == ['']:
             self.text = []
+        vqgan_config=os.path.join(self.model_dir,f'{self.model}.yaml')
         self.args = argparse.Namespace(
             prompts=self.text,
             image_prompts=self.images_objective,
@@ -68,7 +70,7 @@ class VQGAN:
             init_image=self.initial_image,
             init_weight=0.,
             clip_model='ViT-B/32',
-            vqgan_config=f'{self.model}.yaml',
+            vqgan_config=vqgan_config,
             vqgan_checkpoint=f'{self.model}.ckpt',
             step_size=0.1,
             cutn=64,
