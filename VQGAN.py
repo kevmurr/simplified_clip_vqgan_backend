@@ -60,7 +60,8 @@ class VQGAN:
         self.text = [phrase.strip() for phrase in self.text.split("|")]
         if self.text == ['']:
             self.text = []
-        vqgan_config=os.path.join(self.model_dir,f'{self.model}.yaml')
+        self.vqgan_config=os.path.join(self.model_dir,f'{self.model}.yaml')
+        print(f"Using {self.vqgan_config} as model")
         self.args = argparse.Namespace(
             prompts=self.text,
             image_prompts=self.images_objective,
@@ -70,7 +71,7 @@ class VQGAN:
             init_image=self.initial_image,
             init_weight=0.,
             clip_model='ViT-B/32',
-            vqgan_config=vqgan_config,
+            vqgan_config=self.vqgan_config,
             vqgan_checkpoint=f'{self.model}.ckpt',
             step_size=0.1,
             cutn=64,
